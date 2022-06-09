@@ -2,16 +2,14 @@ package com.example.JavaSpringLearning.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+
+import javax.annotation.processing.Generated;
 
 @Document("Product")
 public class ProductModel {
     @Id
     int id;
-
-    @Field(value ="name")
     String name;
-    @Field(value="description")
     String description;
 
     public int getId() {
@@ -48,6 +46,7 @@ public class ProductModel {
     }
 
     public ProductModel(int id, String name, String description) {
+        super();
         this.id = id;
         this.name = name;
         this.description = description;
