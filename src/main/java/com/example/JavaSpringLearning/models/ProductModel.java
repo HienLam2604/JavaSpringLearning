@@ -5,18 +5,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.annotation.processing.Generated;
 
+
 @Document("Product")
 public class ProductModel {
     @Id
-    int id;
+    Long id;
     String name;
     String description;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -45,7 +46,7 @@ public class ProductModel {
                 '}';
     }
 
-    public ProductModel(int id, String name, String description) {
+    public ProductModel(Long id, String name, String description) {
         super();
         this.id = id;
         this.name = name;
