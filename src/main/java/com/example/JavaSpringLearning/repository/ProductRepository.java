@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductRepository extends MongoRepository<ProductModel,Long> {
+   // public ProductModel getProductById(int id);
 }

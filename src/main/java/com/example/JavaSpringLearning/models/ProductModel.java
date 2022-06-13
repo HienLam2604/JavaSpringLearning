@@ -3,7 +3,10 @@ package com.example.JavaSpringLearning.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("Product") //Collection name
+import javax.annotation.processing.Generated;
+
+
+@Document("Product")
 public class ProductModel {
     @Id
     Long id;

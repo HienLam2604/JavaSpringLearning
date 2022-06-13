@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 @EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
 public class JavaSpringLearningApplication{
 	public static void main(String[] args) {
-		System.out.println("Started server at localhost:8080");
 		SpringApplication.run(JavaSpringLearningApplication.class, args);
 	}
 
