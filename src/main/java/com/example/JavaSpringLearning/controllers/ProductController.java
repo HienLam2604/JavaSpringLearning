@@ -10,15 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path="/api/v1/product") // localhost:8080/api/product
+@RequestMapping(path="/api/v1/product") // localhost:8080/api/v1/product
+@CrossOrigin(origins = "http://localhost:4200") //COR - allowed Angular(client) connect
 public class ProductController {
 
-    //DI-
+    //DI
     @Autowired
     private ProductService productService;
 
     //Logger
     Logger logger = Logger.getLogger(ProductController.class.getName());
+
+    //Constructor
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
@@ -32,7 +35,7 @@ public class ProductController {
                 productService.saveProduct(new ProductModel(Long.valueOf(i), "Phone"+i, "Smart phone"));
             }
         }
-        productService.getAllProduct().forEach(product ->System.out.println(product));
+        productService.getAllProduct();
         logger.info("Fetched data !");
         return productService.getAllProduct();
     }
