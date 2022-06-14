@@ -5,7 +5,6 @@ import com.example.JavaSpringLearning.models.BlogModel;
 import com.example.JavaSpringLearning.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,15 +13,14 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api/v1/blog") //localhost:8080/api/v1/blog
-@CrossOrigin(origins ="localhost:4200")
+@CrossOrigin(origins ="http://localhost:4200")
 public class BlogController {
 
     @Autowired
     BlogService blogService;
-    public BlogController(BlogService blogService) {
-        this.blogService = blogService;
-    }
 
+    public BlogController(BlogService blogService) {
+    }
     @GetMapping("")
     List <BlogModel> getAllBlog(){
         if(blogService.getAllBlog().isEmpty()){
@@ -44,5 +42,22 @@ public class BlogController {
     Optional<BlogModel> getBlogById(@PathVariable("id") Long id){
         return blogService.getBlogById(id);
     }
+    @PostMapping("/add")
+    void addNewBlog(@RequestBody BlogModel newBlog){
+        blogService.saveBlog(newBlog);
+    }
+    @DeleteMapping("/{id}")
+    void deleteBlog(@PathVariable("id") Long id){
+        blogService.deleteBlog(id);
+    }
+    @PatchMapping("/{id}")
+    void updateBlog(@PathVariable("id") Long id, @RequestBody BlogModel newBlog){
+        blogService.updateBlog(id, newBlog);
+    }
 
+    @GetMapping("/search") //localhost:8080/api/v1/blog/search?title=?
+    List<BlogModel> searchBlog(@RequestParam(required = false) String title){
+        //System.out.println(title);
+        return blogService.getBlogByName(title);
+    }
 }

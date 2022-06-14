@@ -7,8 +7,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @SpringBootApplication
-@Configuration
 @ComponentScan
+@Configuration
 @EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
 public class JavaSpringLearningApplication{
 	public static void main(String[] args) {
