@@ -1,6 +1,6 @@
 package com.example.JavaSpringLearning.service;
-
 import com.example.JavaSpringLearning.models.BlogModel;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Optional;

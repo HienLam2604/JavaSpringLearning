@@ -4,6 +4,7 @@ package com.example.JavaSpringLearning.controllers;
 import com.example.JavaSpringLearning.models.BlogModel;
 import com.example.JavaSpringLearning.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,7 +23,7 @@ public class BlogController {
     public BlogController(BlogService blogService) {
     }
     @GetMapping("")
-    List <BlogModel> getAllBlog(){
+    List <BlogModel> getAllBlog(Model model){
         if(blogService.getAllBlog().isEmpty()){
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             Date date = new Date();
@@ -36,6 +37,7 @@ public class BlogController {
                 blogService.saveBlog(new BlogModel(Long.valueOf(i),"Blog "+i, content+i,i,i,dateFormat.format(date)));
             }
         }
+        model.addAttribute("blogs",blogService.getAllBlog());
         return blogService.getAllBlog();
     }
     @GetMapping("/{id}")
@@ -45,6 +47,7 @@ public class BlogController {
     @PostMapping("/add")
     void addNewBlog(@RequestBody BlogModel newBlog){
         blogService.saveBlog(newBlog);
+
     }
     @DeleteMapping("/{id}")
     void deleteBlog(@PathVariable("id") Long id){

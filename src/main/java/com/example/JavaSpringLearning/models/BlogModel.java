@@ -1,6 +1,6 @@
 package com.example.JavaSpringLearning.models;
 
-import org.bson.types.ObjectId;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -8,7 +8,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class BlogModel {
     @Id
     Long id;
-    String title,content, dateUpload;
+    String title,content;
+    String dateUpload;
     int like,disLike;
 
     public BlogModel(Long id, String title, String content,int like, int disLike, String dateUpload) {
