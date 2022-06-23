@@ -3,6 +3,7 @@ package com.example.JavaSpringLearning.jwt.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.HashSet;
 import java.util.List;
@@ -14,23 +15,25 @@ public class UserModel {
     String id;
     String username;
     String password;
-    //List<String> roles;
-    String role;
+    @Field(value = "role")
+    List<String> roles;
 
-    public String getRole() {
-        return role;
+    public List<String> getRoles() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 
     public UserModel() {
     }
 
-    public UserModel(String username, String password) {
+    public UserModel(String id, String username, String password, List<String> roles) {
+        this.id = id;
         this.username = username;
         this.password = password;
+        this.roles = roles;
     }
 
     public String getId() {
@@ -56,14 +59,5 @@ public class UserModel {
     public void setPassword(String password) {
         this.password = password;
     }
-    /*
-    public List<String> getRoles() {
-        return roles;
-    }
 
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
-    }
-
-     */
 }

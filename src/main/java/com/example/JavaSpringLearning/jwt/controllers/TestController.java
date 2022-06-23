@@ -13,10 +13,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,21 +61,27 @@ public class TestController {
             throw new Exception("Incorrect username or password !");
         }
 
-        /*
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
-        //UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        UserDetails userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        String jwt = jwtUtil.generateToken(userDetails);
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
+         return ResponseEntity.ok(new AuthenticationResponse(jwt,loginRequest.getUsername(),roles)); // return jwt
 
-         */
+ /*
 
         UserDetails userDetails = myUserDetailsService.loadUserByUsername(loginRequest.getUsername());
         String jwt = jwtUtil.generateToken(userDetails);
-
-        return ResponseEntity.ok(new AuthenticationResponse(jwt)); // return jwt
+        List <String> roles = new ArrayList<>();
+        //roles.add("ADMIN");
+        roles.add("USER");
+        List<String> roles1 = roles.stream()
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(new AuthenticationResponse(jwt, userDetails.getUsername(), roles1));
+*/
 
     }
 }

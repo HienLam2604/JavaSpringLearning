@@ -22,6 +22,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     UserDetailsServiceImpl myUserDetailsService;
     @Autowired
     JwtRequestFilter jwtRequestFilter;
+
+
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(myUserDetailsService);
@@ -29,11 +31,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
-                //.antMatchers("/user/**").hasRole("USER")
-                //.antMatchers("/admin/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/admin/**").hasAnyRole("USER","ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()

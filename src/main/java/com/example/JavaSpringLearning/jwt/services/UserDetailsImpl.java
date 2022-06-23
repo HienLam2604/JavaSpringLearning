@@ -17,43 +17,43 @@ public class UserDetailsImpl implements UserDetails {
     private String id;
     private String username;
     private String password;
+    private List<String> roles;
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsImpl() {
-    }
-
-    public UserDetailsImpl(String id, String username, String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
     }
 
     public UserDetailsImpl(String id, String username, String password, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.authorities=authorities;
+        this.authorities = authorities;
     }
-
+/*
+    public UserDetailsImpl(String id, String username, String password,List<String> roles) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
+*/
     public static UserDetailsImpl build(UserModel user) {
-    /*
+
         List<GrantedAuthority> authorities = user.getRoles().stream() // List <String> roles -> List <Gran...>
                 .map(role -> new SimpleGrantedAuthority(role))
                 .collect(Collectors.toList());
-        System.out.println(authorities);
 
-     */
         return new UserDetailsImpl(
                 user.getId(),
                 user.getUsername(),
                 user.getPassword()
-                //authorities
+                ,authorities
+                //,user.getRoles()
                 );
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;//authorities;
+        return authorities;
     }
 
 
