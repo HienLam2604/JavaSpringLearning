@@ -46,8 +46,8 @@ public class TestController {
         return "USER!";
     }
     @GetMapping("/admin")
-    public String adminSite(){
-        return "ADMIN";
+    public List<UserModel> adminSite(){
+        return userRepository.findAll();
     }
 
 
@@ -61,27 +61,15 @@ public class TestController {
             throw new Exception("Incorrect username or password !");
         }
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetails userDetails = (UserDetailsImpl) authentication.getPrincipal();
         String jwt = jwtUtil.generateToken(userDetails);
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
+
          return ResponseEntity.ok(new AuthenticationResponse(jwt,loginRequest.getUsername(),roles)); // return jwt
-
- /*
-
-        UserDetails userDetails = myUserDetailsService.loadUserByUsername(loginRequest.getUsername());
-        String jwt = jwtUtil.generateToken(userDetails);
-        List <String> roles = new ArrayList<>();
-        //roles.add("ADMIN");
-        roles.add("USER");
-        List<String> roles1 = roles.stream()
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(new AuthenticationResponse(jwt, userDetails.getUsername(), roles1));
-*/
 
     }
 }

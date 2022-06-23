@@ -17,7 +17,6 @@ public class UserDetailsImpl implements UserDetails {
     private String id;
     private String username;
     private String password;
-    private List<String> roles;
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsImpl() {
@@ -29,13 +28,7 @@ public class UserDetailsImpl implements UserDetails {
         this.password = password;
         this.authorities = authorities;
     }
-/*
-    public UserDetailsImpl(String id, String username, String password,List<String> roles) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-    }
-*/
+
     public static UserDetailsImpl build(UserModel user) {
 
         List<GrantedAuthority> authorities = user.getRoles().stream() // List <String> roles -> List <Gran...>
@@ -45,9 +38,8 @@ public class UserDetailsImpl implements UserDetails {
         return new UserDetailsImpl(
                 user.getId(),
                 user.getUsername(),
-                user.getPassword()
-                ,authorities
-                //,user.getRoles()
+                user.getPassword(),
+                authorities
                 );
     }
 
