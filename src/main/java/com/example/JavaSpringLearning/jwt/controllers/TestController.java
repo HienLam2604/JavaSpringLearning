@@ -8,14 +8,13 @@ import com.example.JavaSpringLearning.jwt.services.UserDetailsServiceImpl;
 import com.example.JavaSpringLearning.jwt.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -45,12 +44,27 @@ public class TestController {
     public String userSite(){
         return "USER!";
     }
+    @PostMapping("/signup")
+    public ResponseEntity<?> addUser(@RequestBody UserModel newUser){
+        if(userRepository.existsByUsername(newUser.getUsername())){
+            return ResponseEntity
+                    .badRequest()
+                    .body("Error: Username is already taken!");
+
+        }
+        List<String> roles = new ArrayList<>();
+        roles.add("ROLE_USER");
+        String password = new BCryptPasswordEncoder().encode(newUser.getPassword());
+        UserModel tmp = new UserModel("21", newUser.getUsername(), password, newUser.getRoles() );
+        userRepository.save(newUser);
+        return ResponseEntity.ok("ok");
+    }
     @GetMapping("/admin")
     public List<UserModel> adminSite(){
         return userRepository.findAll();
     }
 
-
+    //localhost:8080/auth
     @RequestMapping(value = "/auth",method = RequestMethod.POST)
     public ResponseEntity<?> authenticateUser(@RequestBody UserModel loginRequest) throws Exception{
         try{

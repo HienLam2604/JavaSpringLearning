@@ -4,8 +4,12 @@ package com.example.JavaSpringLearning.controllers;
 import com.example.JavaSpringLearning.models.BlogModel;
 import com.example.JavaSpringLearning.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,22 +27,22 @@ public class BlogController {
     public BlogController(BlogService blogService) {
     }
     @GetMapping("")
-    List <BlogModel> getAllBlog(Model model){
-        if(blogService.getAllBlog().isEmpty()){
+    Page<BlogModel> getAllBlog(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "4") int size){
+        // 4 items/page
+        Pageable paging = PageRequest.of(page,size);
+        if(blogService.getAllBlog(paging).isEmpty()){
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             Date date = new Date();
             String content = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. " +
                     "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer " +
-                    "took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, " +
-                    "but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s" +
-                    " with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing " +
-                    "software like Aldus PageMaker including versions of Lorem Ipsum";
+                    "took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, "
+                    ;
             for(int i = 1; i<=21;i++){
                 blogService.saveBlog(new BlogModel(Long.valueOf(i),"Blog "+i, content+i,i,i,dateFormat.format(date)));
             }
         }
-        model.addAttribute("blogs",blogService.getAllBlog());
-        return blogService.getAllBlog();
+        model.addAttribute("blogs",blogService.getAllBlog(paging));
+        return blogService.getAllBlog(paging);
     }
     @GetMapping("/{id}")
     Optional<BlogModel> getBlogById(@PathVariable("id") Long id){

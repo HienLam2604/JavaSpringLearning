@@ -3,6 +3,8 @@ package com.example.JavaSpringLearning.service;
 import com.example.JavaSpringLearning.models.BlogModel;
 import com.example.JavaSpringLearning.repository.BlogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +18,8 @@ public class BlogServiceImpl implements BlogService{
 
 
     @Override
-    public List<BlogModel> getAllBlog() {
-        return blogRepository.findAll();
+    public Page<BlogModel> getAllBlog(Pageable paging) {
+        return blogRepository.findAll(paging);
     }
 
     @Override
